@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HolaIO Example</title>
+</head>
+<body>
+<textarea id="code" style="width:1000px; height:300px;">Waiting...</textarea>
+<ul id="links"></ul>
+<script src="holaio.js"></script>
+<script>
+function show (json) {
+  code = JSON.stringify (json);
+  document.getElementById("code").value = code;
+  console.log(json);
+  var links = json["a span"];
+  var linksdiv = document.getElementById("links");
+  links.forEach(function(link) {
+    if (link)
+      linksdiv.innerHTML = linksdiv.innerHTML + "<li>" + link + "</li>";
+  });
+}
+
+document.body.onload = function() {
+  var holaio = new HolaIO("apikey");
+  holaio.get("google.com", "a span", "inner", "show");
+}
+</script>
+</body>
+</html>
