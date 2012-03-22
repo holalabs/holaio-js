@@ -1,4 +1,4 @@
-/* HolaIO Javascript library | github.com/holalabs/holaio-js/blob/master/LICENSE */
+/* HolaIO Javascript library | github.com/holalabs/holaio-js/blob/master/LICENSE.txt */
 
 HolaIO = function(key) {
   this.key = key;
@@ -11,10 +11,8 @@ HolaIO = function(key) {
     if (typeof script != "undefined");
       document.getElementsByTagName("head")[0].appendChild(script);
   }
-  // Implement a function that does nothing to omit errors
-  nothing = function() {}
   this.login = function() {
-    var authurl = serverurl + "/login/" + this.key + "?jsonp=nothing";
+    var authurl = serverurl + "/login/" + this.key + "?jsonp=HolaIO.nothing";
     insertScript(authurl);
   }
   this.login();
@@ -28,3 +26,6 @@ HolaIO = function(key) {
     insertScript(apiurl);
   }
 }
+
+// Implement a function that does nothing to omit errors
+HolaIO.nothing = function() {};

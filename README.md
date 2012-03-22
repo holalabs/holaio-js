@@ -26,4 +26,9 @@ Usage:
 
 ``` javascript
 io.get("google.com", "a span", "inner", "displayGoogleLinks");
+
+function displayGoogleLinks (json) {
+  var links = json["a span"];
+  // Have fun
+}
 ```
