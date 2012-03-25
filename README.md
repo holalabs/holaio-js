@@ -19,13 +19,13 @@ Get the content specified in the following (obligatory) parameters:
 
   - URL: A valid URL without the protocol scheme, because HolaIO currently works only with HTTP so it’ll add the prefix by default. Example: `holalabs.com`
   - Selector: A valid CSS3 selector. If you want to get more than a selector a time, strip them by commas. Example: `a, .primary.content`
-  - Inner or outer: Specify if you want to extract the inner (the content) or the whole content of your selection. Possible values: `inner` or `outer`
+  - Inner or outer: Specify if you want to extract the inner (the content) or the whole content of your selection. Possible values: `true` or `false`
   - Callback: Specify the name of the Javascript function you want to run after the content is returned. HolaIO will pass it a single parameter with the parsed JSON. Example: `makeThingWithContent`
 
 Usage:
 
 ``` javascript
-io.get("google.com", "a span", "inner", "displayGoogleLinks");
+io.get("google.com", "a span", true, "displayGoogleLinks");
 
 function displayGoogleLinks (json) {
   var links = json["a span"];
