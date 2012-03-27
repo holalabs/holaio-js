@@ -19,8 +19,8 @@ HolaIO = function(key) {
   this.login();
   this.get = function(url, selector, inner, callbackfunc) {
     if (HolaIO.logged) {
-      url = encodeURI(url);
-      selector = encodeURI(selector);
+      url = encodeURIComponent(url);
+      selector = encodeURIComponent(selector);
       var apiurl = this.serverurl + url + "/" + selector + "/" + inner + "?jsonp=" + callbackfunc
       insertScript(apiurl);
     } else {
