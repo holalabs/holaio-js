@@ -20,15 +20,19 @@ Get the content specified in the following (obligatory) parameters:
   - URL: A valid URL without the protocol scheme, because HolaIO currently works only with HTTP so it’ll add the prefix by default. Example: `holalabs.com`
   - Selector: A valid CSS3 selector. If you want to get more than a selector a time, strip them by commas. Example: `a, .primary.content`
   - Inner or outer: Specify if you want to extract the inner (the content) or the whole content of your selection. Possible values: `true` or `false`
-  - Callback: Specify the name of the Javascript function you want to run after the content is returned. HolaIO will pass it a single parameter with the parsed JSON. Example: `makeThingWithContent`
+  - Cache: Specify if you want to cache the petition. If you choose to cache it, the petition will be stored in session storage. Possible values: `true` or `false` 
+  - Callback: Specify the function you want to run after the content is returned. HolaIO will pass it two parameters, first is the status code the server sent (useful to check errors) and the second is the reply that contains the parsed JSON. Example: `makeThingWithContent` or `function (err, json) { }`
 
 Usage:
 
 ``` javascript
-io.get("google.com", "a span", true, "displayGoogleLinks");
+io.get("google.com", "a span", true, true, displayGoogleLinks);
 
-function displayGoogleLinks (json) {
-  var links = json["a span"];
+function displayGoogleLinks (err, json) {
   // Have fun
+  if (err == 200)
+    var links = json["a span"];
+  else
+    alert("Error "+err);
 }
 ```

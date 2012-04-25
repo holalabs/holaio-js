@@ -3,37 +3,50 @@
 HolaIO = function(key) {
   this.key = key;
   this.serverurl = "https://api.io.holalabs.com/";
-  // Insert the script dinamically using JSONP
-  insertScript = function(url) {
-    var script = document.createElement("script");
-    script.setAttribute("type","text/javascript")
-    script.setAttribute("src", url);
-    if (typeof script != "undefined");
-      document.getElementsByTagName("head")[0].appendChild(script);
-    return script;
-  }
-  this.login = function() {
-    var authurl = this.serverurl + "login/" + this.key + "?jsonp=HolaIO.authed";
-    var script = insertScript(authurl);
-  }
-  this.login();
-  this.get = function(url, selector, inner, callbackfunc) {
-    if (HolaIO.logged) {
-      url = encodeURIComponent(url);
-      selector = encodeURIComponent(selector);
-      var apiurl = this.serverurl + url + "/" + selector + "/" + inner + "?jsonp=" + callbackfunc
-      insertScript(apiurl);
+  this.doRequest = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    if ("withCredentials" in xhr) {
+      xhr.open("GET", url, true);
+    } else if (typeof XDomainRequest != "undefined"){
+      xhr = new XDomainRequest();
+      xhr.open("GET", url);
     } else {
-      var _this = this;
-      setTimeout(function() {
-        _this.get(url, selector, inner, callbackfunc);
-      }, 100);
+      xhr = null;
+      callback(418, null);
     }
+    xhr.setRequestHeader("X-Api-Key", this.key);
+    xhr.setRequestHeader("X-Api-Version", "1.0.0");
+    xhr.onload = function() {
+      callback(xhr.status, JSON.parse(xhr.responseText));
+    }
+    xhr.onerror = function() {
+      // Cause I'm a teapot
+      callback(418, null);
+    }
+    xhr.send(null);
+  }
+  this.decodeHtmlEntities = function (str) {
+    return String(str).replace(/&amp;/ig, '&').replace(/&lt;/ig, '<').replace(/&gt;/ig, '>').replace(/&quot;/ig, '"');
+  }
+  this.get = function(url, selector, inner, cache, callback) {
+    url = encodeURIComponent(url);
+    selector = encodeURIComponent(escape(this.decodeHtmlEntities(selector)));
+    var apiurl = this.serverurl + url + "/" + selector + "/" + inner;
+    if(cache == true) {
+      var data = sessionStorage.getItem(apiurl);
+      if ('undefined' !== typeof data && data !== null) {
+        callback(null, JSON.parse(data));
+        return;
+      } else {
+        var origCallback = callback;
+        callback = function(err, json) {
+          if (err < 300)
+            sessionStorage.setItem(apiurl, JSON.stringify(json));
+          origCallback(err, json);
+          return;
+        }
+      }
+    }
+    this.doRequest(apiurl, callback);
   }
 }
-
-HolaIO.logged = false;
-
-HolaIO.authed = function() {
-  HolaIO.logged = true;
-};

@@ -9,7 +9,7 @@
 <ul id="links"></ul>
 <script src="holaio.js"></script>
 <script>
-function show (json) {
+show = function(err, json) {
   code = JSON.stringify (json);
   document.getElementById("code").value = code;
   console.log(json);
@@ -21,9 +21,9 @@ function show (json) {
   });
 }
 
-document.body.onload = function() {
-  var holaio = new HolaIO("apikey");
-  holaio.get("google.com", "a span", true, "show");
+window.onload = function() {
+  var holaio = new HolaIO("YOURAPIKEY");
+  holaio.get("google.com", "a span", true, false, show);
 }
 </script>
 </body>
