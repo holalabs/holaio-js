@@ -7,7 +7,7 @@
 <body>
 <textarea id="code" style="width:1000px; height:300px;">Waiting...</textarea>
 <ul id="links"></ul>
-<script src="holaio.js"></script>
+<script src="holaio.min.js"></script>
 <script>
 show = function(err, json) {
   code = JSON.stringify (json);
@@ -22,7 +22,7 @@ show = function(err, json) {
 }
 
 window.onload = function() {
-  var holaio = new HolaIO("YOURAPIKEY");
+  var holaio = new HolaIO("yourapikey");
   holaio.get("google.com", "a span", true, false, show);
 }
 </script>

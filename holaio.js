@@ -2,7 +2,7 @@
 
 HolaIO = function(key) {
   this.key = key;
-  this.serverurl = "https://api.io.holalabs.com/";
+  this.serverurl = "https://api.holalabs.com/io/";
   this.doRequest = function(url, callback) {
     var xhr = new XMLHttpRequest();
     if ("withCredentials" in xhr) {
